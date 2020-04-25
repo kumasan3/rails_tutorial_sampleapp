@@ -1,7 +1,5 @@
 class SessionsController < ApplicationController
   def new
-    # frommodel()
-    fromhelper #Application ControllerがSessionHelperを継承しているから使える
   end
 
   def create

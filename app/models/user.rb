@@ -37,8 +37,5 @@ class User < ApplicationRecord
     end
   end
 
-  def frommodel
-    puts "I am a method from Model"
-  end
 
 end

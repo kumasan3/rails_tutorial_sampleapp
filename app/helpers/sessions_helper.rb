@@ -40,8 +40,4 @@ module SessionsHelper
   end
   
 
-  def fromhelper
-    puts "I am a method from Helper yo"
-  end
-
 end
