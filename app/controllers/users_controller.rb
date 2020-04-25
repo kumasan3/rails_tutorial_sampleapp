@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :logged_in_user, only: [:edit, :update]
   def new
     @user = User.new
     #属性情報だけを持った@userを作成。属性情報を元に、form_withがフォーム作成
@@ -33,7 +34,14 @@ class UsersController < ApplicationController
     end
   end
 
-  
+  def logged_in_user
+    unless logged_in?
+      flash[:danger] = "Please log in."
+      redirect_to login_url
+    end
+  end
+
+
 
   private
     def user_params
