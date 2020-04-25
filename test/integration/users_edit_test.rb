@@ -62,4 +62,35 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     assert flash.empty?
     assert_redirected_to root_url
   end
+
+  test "succesful edit when friendly fowarding" do
+    get edit_user_path(@user) #ログインしてないのにeditURLにアクセス
+    assert_redirected_to login_url #だからログインURLに飛ぶ
+    log_in_as(@user) #ここでログイン
+    assert_redirected_to edit_user_url(@user) #その後はeditURLに飛ぶこと
+    name  = "Foo Bar"
+    email = "foo@bar.com"
+    patch user_path(@user), params: { user: { name:  name,
+                                              email: email,
+                                              password:"",
+                                              password_confirmation: "" } }
+    assert_not flash.empty?
+    assert_redirected_to @user
+    @user.reload
+    assert_equal name,  @user.name
+    assert_equal email, @user.email
+  end
+
+  test "friendly forwarding direct works only one time" do
+    get edit_user_path(@user) #ログインしてないのにeditURLにアクセス
+    assert_redirected_to login_url #だからログインURLに飛ぶ
+    assert_equal session[:forwarding_url], edit_user_url(@user)
+    log_in_as(@user) #ここでログイン
+    assert_redirected_to edit_user_url(@user) #その後はeditURLに飛ぶこと
+    delete logout_path
+    assert_redirected_to root_url
+    log_in_as(@user) #再度ログイン
+    assert_redirected_to @user #2回目はプロフィールに飛ぶ
+    assert_equal session[:forwarding_url], nil
+  end
 end
