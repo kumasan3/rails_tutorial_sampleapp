@@ -2,7 +2,7 @@ require 'test_helper'
 
 class UsersLoginTest < ActionDispatch::IntegrationTest
   def setup
-    @user = users(:michael)
+    @user = users(:michael) #fixtureのmichaelを取り出し
   end
   test "valid signup information" do
     get signup_path
@@ -65,9 +65,25 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     delete logout_path
     assert_not is_logged_in?
     assert_redirected_to root_url
+    delete logout_path #2度ログアウトを実行　をシュミレート
     follow_redirect!
     assert_select "a[href=?]", login_path
     assert_select "a[href=?]", logout_path,      count: 0
     assert_select "a[href=?]", user_path(@user), count: 0
   end
+
+  test 'login with remembering' do
+    log_in_as(@user, remember_me: '1')
+    assert_equal cookies[:remember_token], assigns(:user).remember_token
+    assert_equal @user, assigns(:user) #fixtureでセットアップしたuserと、コントローラで使われた@userが同じ
+  end
+
+  test 'login without remembering' do
+    log_in_as(@user, remember_me: '1')
+    delete logout_path
+    logout_path(@user, remember_me: '0')
+    assert_empty cookies[:remember_token]
+  end
+
+
 end
