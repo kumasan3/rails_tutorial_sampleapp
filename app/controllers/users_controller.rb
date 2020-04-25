@@ -1,6 +1,10 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:edit, :update]
+  before_action :logged_in_user, only: [:edit, :update, :index]
   before_action :correct_user, only: [:edit, :update]
+
+  def index
+    @users = User.all
+  end
   def new
     @user = User.new
     #属性情報だけを持った@userを作成。属性情報を元に、form_withがフォーム作成
