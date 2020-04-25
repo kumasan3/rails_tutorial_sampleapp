@@ -6,7 +6,7 @@ class User < ApplicationRecord
   validates :email, presence: true, length: {maximum: 255},
   format: { with: VALID_EMAIL_REGEX }, uniqueness: true
   has_secure_password
-  validates :password, length: { minimum: 6 }, presence: true
+  validates :password, length: { minimum: 6 }, presence: true, allow_nil: true
 
   def remember #tokenの生成と、それをハッシュ化しDBに保存
     self.remember_token = User.new_token
