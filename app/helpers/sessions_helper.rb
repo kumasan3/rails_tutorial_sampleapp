@@ -16,6 +16,10 @@ module SessionsHelper
     end
   end
 
+  def current_user?(user)
+    user && user == current_user
+  end
+
   def logged_in?
     !current_user.nil?
   end
@@ -35,7 +39,7 @@ module SessionsHelper
   def remember(user)
     user.remember #userモデルに定義
     cookies.permanent.signed[:user_id] = user.id
-    cookies.permanent[:remember_token] = user.remember_token 
+    cookies.permanent[:remember_token] = user.remember_token
     #token(暗号化されていない)を渡す。
   end
   
