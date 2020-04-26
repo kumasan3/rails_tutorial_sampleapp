@@ -14,9 +14,10 @@ class User < ApplicationRecord
     update_attribute(:remember_digest, User.digest(remember_token))
   end
 
-  def authenticated?(remember_token)
-    return false if remember_digest.nil?
-    BCrypt::Password.new(remember_digest).is_password?(remember_token)
+  def authenticated?(attribute, token)
+    digest = send("#{attribute}_digest")
+    return false if digest.nil?
+    BCrypt::Password.new(digest).is_password?(token)
     #レシーバuserのremember_digest。self無しでも使える。
     #ハッシュ化されたremember_digestを復号しているのではなく、
     #remember_tokenをBCryptでハッシュ化し、それがremember_digestと一致するか判断している。
