@@ -16,6 +16,7 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
     assert_select 'div.pagination', 2
     User.paginate(page: 1).each do |user|
       assert_select 'a[href=?]', user_path(user), text: user.name
+      assert user.activated?
     end #?は not empty って意味
   end
   test "index as admin including pagination and delete links" do
