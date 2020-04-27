@@ -1,4 +1,6 @@
 class PasswordResetsController < ApplicationController
+  before_action :get_user, only: [:edit, :update]
+  before_action :valid_user, only: [:edit, :update]
   def new
   end
   def create # reset_tokenの作成
@@ -17,4 +19,21 @@ class PasswordResetsController < ApplicationController
 
   def edit
   end
+
+  def update
+
+  end
+
+  private
+
+    def get_user
+      @user = User.find_by(email: params[:email])
+    end
+
+    def valid_user #reset_tokenは resources のルーティングに従い、params[:id]に入る
+      unless (@user && @user.activated? && @user.authenticated?(:reset, params[:id]))
+        redirect_to root_url #false ならroot_urlにリダイレクト
+      end
+      #trueなら、何もしない。 editアクションなら "edit"テンプレートが呼ばれる
+    end
 end
