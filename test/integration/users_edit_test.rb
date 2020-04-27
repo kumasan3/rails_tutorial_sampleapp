@@ -91,6 +91,6 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
     log_in_as(@user) #再度ログイン
     assert_redirected_to @user #2回目はプロフィールに飛ぶ
-    assert_equal session[:forwarding_url], nil
+    assert_nil session[:forwarding_url]
   end
 end
