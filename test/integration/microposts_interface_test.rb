@@ -9,6 +9,7 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     log_in_as(@user)
     get root_path
     assert_select 'div.pagination'
+    assert_select "input[type=file]"
     if @user.microposts.count >= 2
       assert_match "#{@user.microposts.count} microposts", response.body
     elsif @user.microposts.count == 1
@@ -23,9 +24,11 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     assert_select "div#error_explanation"
     assert_select "a[href=?]", '/?page=2' 
     content = "This micropost really ties the room together"
+    image = fixture_file_upload('test/fixtures/kitten.jpg', 'image/jpeg')
     assert_difference 'Micropost.count', 1 do
-      post microposts_path params: {micropost: {content:content}}
+      post microposts_path, params: { micropost: { content: content, image: image } }
     end
+    assert @user.microposts.first.image.attached?
     assert_redirected_to root_url
     follow_redirect!
     assert_match content, response.body

@@ -74,7 +74,7 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_password_reset_url
     assert_response :redirect
     follow_redirect!
-    assert_match /expired/i, response.body
+    assert_match (/expired/i), response.body
   end
 
   # メールアドレスが無効
