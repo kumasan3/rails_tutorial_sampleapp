@@ -35,6 +35,7 @@ class MicropostTest < ActiveSupport::TestCase
   end
 
   test "order should be the most recent file" do
+    # assert_equal Micropost.first, "okpo"
     assert_equal microposts(:most_recent), Micropost.first
   end
 
