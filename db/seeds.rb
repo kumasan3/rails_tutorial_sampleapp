@@ -31,3 +31,15 @@ users = User.order(:created_at).take(6)
   content = Faker::Lorem.sentence(word_count: 5)
   users.each { |user| user.microposts.create!(content: content) }
 end
+
+users = User.all
+user  = users.first
+following = users[2..50]
+followers = users[3..40]
+following.each { |followed| user.follow(followed) }
+#1のユーザーが2-50までのユーザをフォローする
+followers.each { |follower| follower.follow(user) }
+#3-40までのユーザが1をフォローする
+
+#3-40までのユーザーは1と相互フォローの関係
+#41-50までのユーザは1が一方的にフォローしている
