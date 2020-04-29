@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-  # before_action :puts_url
   include SessionsHelper
 
   private 
