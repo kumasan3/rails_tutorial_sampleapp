@@ -58,9 +58,15 @@ class FollowingTest < ActionDispatch::IntegrationTest
     end
     # get user_path(@other)
     # assert_select "div#follow_form>form>input.btn[value=?]", "Follow"
-    
   end
 
+  test "feed on Home page" do
+    get root_path
+    @user.feed.take(2).each do |micropost|
+      assert_match CGI.escapeHTML(micropost.content), response.body
+      puts response.body
+    end
+  end
 
   
 
