@@ -31,3 +31,4 @@ class MicropostsController < ApplicationController
     end
 
 end
+# What the fuck is checkout
