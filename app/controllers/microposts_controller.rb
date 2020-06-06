@@ -33,3 +33,5 @@ class MicropostsController < ApplicationController
 end
 # What the fuck is checkout
 # this will be registered
+# new change
+# lll
